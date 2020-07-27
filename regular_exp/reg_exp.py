@@ -17,7 +17,14 @@ path\to\file\ICIS_2020_13_05_11_41_BLALBA_BLA.xls.xlsx
 '''
 import re
 import os
+import pathlib
 
 directory = r'case_1\some_directory'
 all_files = os.listdir(directory)
-print(all_files)
+source_file = 'ICIS'
+for i in all_files:
+    match = re.fullmatch(
+        rf'{source_file}_\d\d\d\d_\d\d_\d\d_\d\d_\d\d_.*\.txt', i)
+    if match:
+        print('ok', match)
+print(os.path.abspath('asd.txt'))
