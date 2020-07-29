@@ -13,18 +13,37 @@ path\to\file\ICIS_2020_13_05_11_41_BLALBA_BLA.xls.xlsx
 полное имя файла
 имя файла без расширения
 И в данном случае все эти значения проще получить с помощью библиотеки os, без регулярок, советую посмотреть)
-Пример 2
 '''
 import re
 import os
-import pathlib
+from os import path
 
-directory = r'case_1\some_directory'
+# enter the directory
+directory = os.path.join('case_1', 'some_directory')
+# take all file's name in directory variable
 all_files = os.listdir(directory)
+# enter source
 source_file = 'ICIS'
-for i in all_files:
+# creating empty matching list
+match_files = []
+# go through the lis of all files
+for file in all_files:
     match = re.fullmatch(
-        rf'{source_file}_\d\d\d\d_\d\d_\d\d_\d\d_\d\d_.*\.txt', i)
+        rf'{source_file}_\d\d\d\d_\d\d_\d\d_\d\d_\d\d_.*\.txt', file)
     if match:
-        print('ok', match)
-print(os.path.abspath('asd.txt'))
+        match_files.append(path.join(directory, match.string))
+
+match_files_only_name = []
+for file in match_files:
+    temp_string = path.splitext(file)[0]
+    match_files_only_name.append(temp_string)
+
+# directory
+print('dirrectory = ', directory)
+print('-------------------------')
+# full name
+print('list of match files = ', match_files)
+print('-------------------------')
+# name witout name suffix
+print('only name from match_files with out name suffix = ',
+      match_files_only_name)
