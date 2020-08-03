@@ -58,7 +58,7 @@ for i in match_files:
     else:
         temp_dict['flag'] = 'N'
     our_structure.append(temp_dict)
-
+    temp_dict['file name'] = i
 # sorting by number
 out = sorted(our_structure, key=lambda i: i['number'])
 print(out)
