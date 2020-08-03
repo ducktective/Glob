@@ -19,7 +19,7 @@ import os
 from os import path
 
 # enter the directory
-directory = os.path.join('case_1', 'some_directory')
+directory = os.path.join('some_directory')
 # take all file's name in directory variable
 all_files = os.listdir(directory)
 # enter source
