@@ -26,10 +26,12 @@ all_files = os.listdir(directory)
 source_file = 'ICIS'
 # creating empty matching list
 match_files = []
+# files extension
+file_extension = 'txt'
 # go through the lis of all files
 for file in all_files:
     match = re.fullmatch(
-        rf'{source_file}_\d\d\d\d_\d\d_\d\d_\d\d_\d\d_.*\.txt', file)
+        rf'{source_file}_\d\d\d\d_\d\d_\d\d_\d\d_\d\d_.*\.{file_extension}', file)
     if match:
         match_files.append(path.join(directory, match.string))
 

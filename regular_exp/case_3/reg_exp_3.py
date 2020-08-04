@@ -2,10 +2,10 @@
 Прочесть скрипт из файла, убрать все комментарии и отступы
 Убрать все многострочные комментарии
 Примеры:
- 	1./* asdfg*/,
-	2./*gdf
-	dfd
-	s*/
+    1./* asdfg*/,
+    2./*gdf
+    dfd
+    s*/
 они могут быть в несколько строк
 комментарий от /* и до */
 убрать все однострочные комментарии
@@ -24,14 +24,14 @@ directory = os.path.join('example')
 all_files = os.listdir(directory)
 # in all files
 for one_file in all_files:
-        # opening files
+    # opening files
     file = open(os.path.join(directory, one_file), mode='r', encoding='utf8')
     # add everythink in one big string object
     for i in file:
         al_rows += i
     # replace all type of coment on nothing
-    al_rows = re.sub(r'--.*', '', al_rows)
     al_rows = re.sub(r'(?s)/\*.*?\*/', '\n', al_rows)
+    al_rows = re.sub(r'--.*', '', al_rows)
     # closing file
     file.close()
     # open file again, but with 'w' mode
