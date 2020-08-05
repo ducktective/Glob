@@ -32,17 +32,14 @@ all_files = os.listdir(directory)
 # creat empty matching list
 match_files = []
 # creating patterns for rows check
-pattern1 = r'\d+_\w+\.\w+\.sql'
-pattern2 = r'\d+_\w+\.sql'
+#pattern1 = r'\d+_\w+\.\w+\.sql'
+#pattern2 = r'\d+_\w+\.sql'
+pattern = r'\d+_\w+(\.\w+)*\.sql'
 # go through the lis of all files
 for file in all_files:
-    if re.fullmatch(pattern1, file):
+    if re.fullmatch(pattern, file):
         match_files.append(path.join(re.fullmatch(
-            pattern1, file).string))
-    elif re.fullmatch(
-            pattern2, file):
-        match_files.append(path.join(re.fullmatch(
-            pattern2, file).string))
+            pattern, file).string))
 
 our_structure = []
 for i in match_files:
