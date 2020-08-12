@@ -58,7 +58,7 @@ def check_table_name():
 
 
 def var_ready_for_load():
-    Variable.set('Variables', str('True'))
+    Variable.set('Variables_ready_for_load', str('True'))
 
 
 with dag:
