@@ -4,6 +4,7 @@ import pandas as pd
 import xlrd
 import re
 from airflow.hooks.base_hook import BaseHook
+import shutil
 
 
 class DownLoadData:
@@ -12,9 +13,9 @@ class DownLoadData:
     # Check ui Airflow in browser for details
     connection_info = {'host': connection.host,
                        'port': 5433,
-                       'user':  connection.user,
+                       'user':  connection.login,
                        'password':  connection.password,
-                       'database':  connection.db}
+                       'database':  connection.schema}
 
     @staticmethod
     def convert_to_csv(file_):
@@ -72,3 +73,6 @@ class DownLoadData:
                 csv_file = convert_to_csv(file_)
                 cur.execute(
                     fr"COPY test_vert.STG_NEW_CAPACITIES(commodity,cause,region,country_or_teritory,company,site,plant_no,estimated_start_date,exp_ann_cap_change,total_annual, swing_capable) FROM local {csv_file} PARSER fcsvparser() ABORT ON ERROR;")
+                loaded_data = os.path.join(
+                    '/usr', 'local', 'airflow', 'loaded_data')
+                shutil.copyfile(csv_file, loaded_data)

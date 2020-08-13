@@ -28,12 +28,12 @@ dag = DAG(
     schedule_interval=None)
 
 
-
 logging.basicConfig(level=logging.INFO)
 
 
 def download_task():
-    file = os.path.join('/usr','local','airflow','libs','NEW_CAPACITIES.xlsx')
+    file = os.path.join('/usr', 'local', 'airflow',
+                        'libs', 'NEW_CAPACITIES.xlsx')
     download_data.DownLoadData.download_data(file)
 
 
