@@ -3,18 +3,18 @@ import numpy as np
 import pandas as pd
 import xlrd
 import re
-from airflow.models.connection import Connection
+from airflow.hooks.base_hook import BaseHook
 
 
 class DownLoadData:
     # Config for connection
-    vertica_config = Connection('vertica_connection').get_settings()
+    connection = BaseHook.get_connection('Vertica_connection')
     # Check ui Airflow in browser for details
-    connection_info = {'host': vertica_config['host'],
-                       'port': vertica_config['port'],
-                       'user': vertica_config['user'],
-                       'password': vertica_config['password'],
-                       'database': vertica_config['db']}
+    connection_info = {'host': connection.host,
+                       'port': 5433,
+                       'user':  connection.user,
+                       'password':  connection.password,
+                       'database':  connection.db}
 
     @staticmethod
     def convert_to_csv(file_):
