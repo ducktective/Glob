@@ -77,9 +77,13 @@ class DownloadData():
                            'password':  connection.password,
                            'database':  connection.schema}
         with vertica_python.connect(**connection_info) as conn:
+            logging.info('1')
             cur = conn.cursor()
+            logging.info('2')
             cur.execute(
-                fr"COPY test_vert.STG_NEW_CAPACITIES(commodity,cause,region,country_or_teritory,company,site,plant_no,estimated_start_date,exp_ann_cap_change,total_annual, swing_capable) FROM local '{csv_file}' PARSER fcsvparser() ABORT ON ERROR;")
+                fr"COPY test_vert.STG_NEW_CAPACITIES(commodity,cause,region,country_or_teritory,company,site,plant_no,estimated_start_date,exp_ann_cap_change,total_annual, swing_capable) FROM local '{csv_file}' PARSER fcsvparser() ABORT ON ERROR;COMMIT;")
+            logging.info('3')
             loaded_data = os.path.join(
                 '/usr', 'local', 'airflow', 'data', 'test_loaded_data')
             shutil.copyfile(csv_file, loaded_data)
+            logging.info('4')
