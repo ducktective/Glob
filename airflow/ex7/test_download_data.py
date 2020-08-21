@@ -76,6 +76,7 @@ class DownloadData():
                            'user':  connection.login,
                            'password':  connection.password,
                            'database':  connection.schema}
+        #НАТАША ВОТ НИЖЕ
         with vertica_python.connect(**connection_info) as conn:
             logging.info('1')
             cur = conn.cursor()
