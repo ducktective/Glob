@@ -26,6 +26,10 @@ dag = DAG(
 var = Variable.get('test_Variables')
 
 
+# def get_connection_task():
+#     DownloadData.get_connection()
+
+
 def check_var_task():
     DownloadData.check_var(var)
 
@@ -38,7 +42,15 @@ def download_to_vertica_task():
     DownloadData.download_to_vertica(var)
 
 
+def close_connection_task():
+    DownloadData.close_connection()
+
+
 with dag:
+    # task0_get_connection = PythonOperator(
+    #     task_id='task0_get_connection',
+    #     python_callable=get_connection_task)
+
     task1_download_data = PythonOperator(
         task_id='task_download_data',
         python_callable=check_var_task)
@@ -51,4 +63,8 @@ with dag:
         task_id='task_download_to_vertica',
         python_callable=download_to_vertica_task)
 
-    task1_download_data >> task2_check_column >> task3_download_to_vertica
+    task4_close_connection = PythonOperator(
+        task_id='task_close_connection',
+        python_callable=close_connection_task)
+
+    task1_download_data >> task2_check_column >> task3_download_to_vertica >> task4_close_connection

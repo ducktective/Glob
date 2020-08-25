@@ -18,6 +18,34 @@ import shutil
 
 
 class DownloadData():
+    # connection = ''
+    # connection_info = ''
+    # conn = ''
+    connection = BaseHook.get_connection(
+        'Test_bad_Vertica_connection')
+    connection_info = {'host': connection.host,
+                       'port': 5433,
+                       'user':  connection.login,
+                       'password':  connection.password,
+                       'database':  connection.schema}
+    conn = vertica_python.connect(**connection_info)
+
+    # @staticmethod
+    # def get_connection():
+
+    #     DownloadData.connection = BaseHook.get_connection(
+    #         'Test_bad_Vertica_connection')
+    #     DownloadData.connection_info = {'host': DownloadData.connection.host,
+    #                                     'port': 5433,
+    #                                     'user':  DownloadData.connection.login,
+    #                                     'password':  DownloadData.connection.password,
+    #                                     'database':  DownloadData.connection.schema}
+    #     DownloadData.conn = vertica_python.connect(
+    #         **DownloadData.connection_info)
+
+    @staticmethod
+    def close_connection():
+        DownloadData.conn.close()
 
     @staticmethod
     def check_var(var_value):
@@ -68,23 +96,14 @@ class DownloadData():
 
     @staticmethod
     def download_to_vertica(file_):
-        csv_file = DownloadData.convert_to_csv(file_)
-        connection = BaseHook.get_connection(
-            'Test_bad_Vertica_connection')
-        connection_info = {'host': connection.host,
-                           'port': 5433,
-                           'user':  connection.login,
-                           'password':  connection.password,
-                           'database':  connection.schema}
-        #НАТАША ВОТ НИЖЕ
-        with vertica_python.connect(**connection_info) as conn:
-            logging.info('1')
-            cur = conn.cursor()
-            logging.info('2')
-            cur.execute(
-                fr"COPY test_vert.STG_NEW_CAPACITIES(commodity,cause,region,country_or_teritory,company,site,plant_no,estimated_start_date,exp_ann_cap_change,total_annual, swing_capable) FROM local '{csv_file}' PARSER fcsvparser() ABORT ON ERROR;COMMIT;")
-            logging.info('3')
-            loaded_data = os.path.join(
-                '/usr', 'local', 'airflow', 'data', 'test_loaded_data')
-            shutil.copyfile(csv_file, loaded_data)
-            logging.info('4')
+        csv_file = str(DownloadData.convert_to_csv(file_))
+        logging.info(csv_file)
+        cur = DownloadData.conn.cursor()
+        logging.info('second step')
+        cur.execute(
+            fr"COPY test_vert.STG_NEW_CAPACITIES(commodity,cause,region,country_or_teritory,company,site,plant_no,estimated_start_date,exp_ann_cap_change,total_annual, swing_capable) FROM local '{csv_file}' PARSER fcsvparser() ABORT ON ERROR;")
+        logging.info('therd step')
+        loaded_data = os.path.join(
+            '/usr', 'local', 'airflow', 'data', 'test_loaded_data', 'NEW_CAPACITIES.csv')
+        shutil.copyfile(csv_file, loaded_data)
+        logging.info('fourth step')
